@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>LToy H5 Engine</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../css/reveal.css">
+    <link rel="stylesheet" href="../../css/theme/night.css" id="theme">
+</head>
+
+<body>
+
+    <div class="reveal">
+
+        <div class="slides">
+
+            <section data-markdown>
+                <script type="text/template">
+                    ## LTOY H5 Engine
+
+                    ## Features
+                </script>
+            </section>
+
+            <section data-markdown>
+                <script type="text/template">
+                    ## Feature 1： 首屏魔鬼身材
+
+                    **5k** 的清新骨架首屏，不再是白屏+让人焦躁的Loading
+                </script>
+            </section>
+
+            <section data-markdown>
+                <script type="text/template">
+                    ## Feature 2 - 容错和自动降级
+
+                    远程服务异常，我有容错方案
+
+                    符合降级策略，我可直接无视
+
+                    (降级策略为在最近一段时间内，错误次数达到N次或错误率达到N%)
+                </script>
+            </section>
+
+            <section data-markdown>
+                <script type="text/template">
+                    ## Features 3 - 并发请求 N To 1
+
+                    500个同样的请求并发，我只会CALL远程服务 1 次
+
+                    远程服务兄弟表示减少了并发压力
+                </script>
+            </section>
+
+            <section data-markdown>
+                <script type="text/template">
+                    ## Features 4 - 访问和异常日志
+
+                    一个请求缓慢，日志会告诉你远程服务的响应时间
+
+                    一个请求异常，日志会告诉你异常发生的来龙去脉
+                </script>
+            </section>
+
+            <section data-markdown>
+                <script type="text/template">
+                    ## Features 5 - 充分测试的
+
+                    “正反”单元测试测试
+                    
+                    模拟各种服务不可用的情况
+
+                    代码覆盖率100%
+                    
+                </script>
+            </section>
+
+        </div>
+
+    </div>
+
+    <script src="../../lib/js/head.min.js"></script>
+    <script src="../../js/reveal.js"></script>
+
+    <script>
+        Reveal.initialize({
+            history: true,
+            transition: 'linear',
+
+            math: {
+                // mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+                config: 'TeX-AMS_HTML-full'
+            },
+
+            dependencies: [
+                { src: '../../lib/js/classList.js' },
+
+                // Interpret Markdown in <section> elements
+                { src: '../../plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+                { src: '../../plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+            ]
+        });
+
+    </script>
+
+</body>
+
+</html>

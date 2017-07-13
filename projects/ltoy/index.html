@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>LToy - Why Node.js?</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../css/reveal.css">
+    <link rel="stylesheet" href="../../css/theme/night.css" id="theme">
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+
+        <section data-markdown>
+            <script type="text/template">
+                ## LToy - 新一代页面制作生态
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 项目介绍
+
+                LToy是新一代的页面制作生态
+                
+                它的使命是统一页面制作工具和页面渲染引擎
+
+                给运营人员带来统一的更加友好的操作体验
+
+                给开发人员带来标准的更加高效的开发体验
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 系统时序图
+                ![](http://note.youdao.com/yws/public/resource/f61529b5f8afb87223c68e2594d740bb/xmlnote/4998EDFAD8E047FB913516FDA1EC793C/28560)
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 异常情况的回滚预案
+
+                - 新旧共存，当新系统出问题时，在Node层302跳转到旧系统
+                - 当Node服务不可用时，Nginx切流量到旧系统
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 服务器扩容需求
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## Node.js的健壮性报告 
+                参考业界大咖使用情况
+
+                - 国外：
+                    - Paypal的支付系统
+                    - Linkin的移动端后台
+                    - Walmart的移动端服务
+                - 国内：
+                    - 阿里的天猫，淘宝商场
+                    - 360的web开发框架thinkjs
+                    - 网易的pomelo游戏服务框架
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## Node.js后续异常监控机制
+
+                - 服务定时心跳监控    
+                Node服务提供echo接口供监控服务调用
+
+                - 应用状态监控   
+                QPS，响应时间以及所有的远程调用记录等
+
+                - 错误日志监控    
+                上报错误日志等 
+
+                - 系统状态监控  
+                内存，CPU，load等的监控
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## Node服务压测报告
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## Node服务部署
+                一次构建多次部署 - 构建后打包成 tgz 文件，部署时解压启动即可
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 运维需要配合的工作
+
+                - 首次部署    
+                选用同集群部署方案，通讯在本地进行，最大限度减少通讯损耗
+
+                - Node服务监控系统化    
+                可参考[keymetrics](https://keymetrics.io/)Node服务监控系统
+            </script>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="../../lib/js/head.min.js"></script>
+<script src="../../js/reveal.js"></script>
+
+<script>
+
+    Reveal.initialize({
+        history: true,
+        transition: 'linear',
+
+        math: {
+            // mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+            config: 'TeX-AMS_HTML-full'
+        },
+
+        dependencies: [
+            { src: '../../lib/js/classList.js' },
+
+            // Interpret Markdown in <section> elements
+            { src: '../../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        ]
+    });
+
+</script>
+
+</body>
+</html>
