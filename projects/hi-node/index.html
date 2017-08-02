@@ -31,17 +31,155 @@
 
         <section data-markdown>
             <script type="text/template">
-                ## Guess you like:
+                ## [About](#/2)
 
-                ## [History]() / [Architecture]() 
+                ## [Async IO](#/5)
 
-                ## [Single Thread]() / [Scenario]()
-                
-                ## [Modules](#/2) / [Async IO]()
+                ## [Modules](#/14) 
+            </script>
+        </section>
 
-                ## [Cluster]() / [GC]()
+        <!--About-->
+        <section data-markdown>
+            <script type="text/template">
+            ## What's Node.js?
 
-                ## [Install]() / [Debug]() / [Profile]() 
+            <span class="fragment" data-fragment-index="0">一门语言？</span> <span class="fragment" data-fragment-index="1">Web服务器？</span> <span class="fragment" data-fragment-index="2">js库？</span>
+
+            Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine <!-- .element: class="fragment" data-fragment-index="3" --> 
+
+            Tags: event-driven + non-blocking I/O => Async IO <!-- .element: class="fragment" data-fragment-index="4" --> 
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## what's the package ecosystem?
+
+            NPM: npm is the package manager for javascript
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## What can be done with it?
+
+            Web 应用: express / koa / ...
+
+            web 服务器: TCP / UDP / HTTP / WebSocket
+
+            desktop 应用: electron / nw
+
+            命令行工具：webpack / gulp / ...
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            What ???
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170802234535.png?t=1501688705792)
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            Why ???
+
+            同步IO：m + n
+            ```
+            getDataFromDB(); // m seconds
+            getDataFromRemoteAPI(); // n seconds
+            ```
+
+            异步IO：max(m, n)
+            ```
+            Promise.all([getDataFromDB(), getDataFromRemoteAPI()]).then(res => {
+                ...
+            })
+            ```
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            How ??? - libuv
+
+            ![](http://note.youdao.com/yws/public/resource/f67e1a6780670b06d6e7069e6250ee0e/xmlnote/29B7AD139AFB4B42A826D7D79A5D6D8A/29124)
+            ![](http://daniel-test.image.alimmdn.com/share/20170803003218.png?t=1501691522079) <!-- .element: class="fragment" data-fragment-index="1" --> 
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            ![](http://docs.libuv.org/en/v1.x/_images/architecture.png)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识阻塞IO
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803001425.png?t=1501690586811)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识非阻塞IO - read
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803001958.png?t=1501691053406)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识非阻塞IO - select 数组，1024限制
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803002025.png?t=1501691058675)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识非阻塞IO - poll 链表，性能提升
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803002436.png?t=1501691047788)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识非阻塞IO - epoll
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803002439.png?t=1501691063690)
 
             </script>
         </section>
@@ -51,7 +189,7 @@
             <script type="text/template">
             ## Module
 
-            遵循 "CommonJS" 规范 <span class="fragment">- Module只是规范之一</span>   
+            <span class="fragment" data-fragment-index="0">遵循 "CommonJS" 规范</span> <span class="fragment" data-fragment-index="2">- Module只是规范之一</span>   
             ![](http://daniel-test.image.alimmdn.com/share/commonjs.png?t=1501407779532) <!-- .element: class="fragment" data-fragment-index="1" -->  
             
             </script>
@@ -85,7 +223,7 @@
             ```
                 // demo.js
 
-                const hello = require('hello');
+                const hello = require('./hello');
 
                 hello.sayHi();
             ```
@@ -146,10 +284,12 @@
 
             1. if X/package.json is a file    <!-- .element: class="fragment" data-fragment-index="1" -->    
                if "main" field exist    
-               `"main": "./main.js" => load_as_file(X/main.js)`
+               `"main": "./main.js" => load_as_file(X/main.js)`   
+               [[例子]](https://github.com/koajs/koa/blob/master/package.json)
             
             2. load_index   <!-- .element: class="fragment" data-fragment-index="2" -->      
                `load_as_file(X/index)`   
+               [[例子]](https://github.com/expressjs/express)  
             
             </script>
         </section>
