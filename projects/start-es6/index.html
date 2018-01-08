@@ -47,7 +47,7 @@
             <script type="text/template">
             ## for-of
 
-            - 用于“正确地"遍历数组
+            - 用于“正确地"遍历数组 
             ```
                 let arr = ['a', 'b'];
                 for (let item of arr) {
@@ -79,7 +79,7 @@
                     console.log(idx, arr[idx], idx + 1, arr[idx + 1]);
                 }
             ```
-            - ( Why string? 为遍历Object而设计，Object的key是string ）
+            - ( Why string? 为遍历Object而设计，Object的key是string ）<!-- .element: class="fragment" data-fragment-index="1" -->
 
             - 坑二：意外的输出
             ```
@@ -89,7 +89,7 @@
                     console.log(idx); // 输出"0" "1" "key"
                 }
             ```
-            - ( 原因同上，为Object而设计 ）
+            - ( 原因同上，为Object而设计 ）<!-- .element: class="fragment" data-fragment-index="2" -->
 
             </script>
         </section>
@@ -100,9 +100,9 @@
 
             - 总结：遍历数组用for-of，遍历对象用for-in
 
-            - 更精确的总结：遍历Array，Map，Set用for-of，遍历Object用for-in
+            - 更精确的总结：遍历Array，Map，Set用for-of，遍历Object用for-in <!-- .element: class="fragment" data-fragment-index="1" -->
 
-            - [想了解原因吗？下次相聚更精彩](https://www.jianshu.com/p/d14af776b5a2)
+            - [想了解原因吗？下次相聚更精彩](https://www.jianshu.com/p/d14af776b5a2) <!-- .element: class="fragment" data-fragment-index="2" -->
 
             </script>
         </section>
@@ -234,7 +234,7 @@
             foo1('a', 'b', 'c');
             ```
 
-            - 不定参数闪亮登场（对比可读性，无对比就无伤害）
+            - 不定参数闪亮登场<span class="fragment" data-fragment-index="0">（对比可读性，无对比就无伤害）</span>
             ```
             function foo2(firstParam, ...others) {
                 for(let otherParam of others) {
@@ -253,9 +253,9 @@
 
             - 注意：不定参数只能作为最后一个参数，没值的时候是个空数组，非undefined
 
-            - 标准中规定，使用不定参数和默认值的函数中禁止使用arguments对象   
+            - 标准中规定，使用不定参数和默认值的函数中禁止使用arguments对象   <!-- .element: class="fragment" data-fragment-index="1" -->  
 
-            - 不定参数可以优雅地替换掉arguments，SO，呼吁像禁掉IE一样禁掉arguments
+            - 不定参数可以优雅地替换掉arguments，SO，呼吁像禁掉IE一样禁掉arguments <!-- .element: class="fragment" data-fragment-index="2" --> 
 
             </script>
         </section>
@@ -303,7 +303,7 @@
             <script type="text/template">
             ## 解构
 
-            - 迭代器对象用"[]"，如Array（何为迭代器对象，请听下回分解）
+            - 迭代器对象用"[]"，如Array<span class="fragment" data-fragment-index="0">（何为迭代器对象，请听下回分解）</span>
             ```
             // 支持留空跳过，嵌套，不定参数
             let [, v2, [v3], ...tail] = [1, 2, [3], 4, 5];
@@ -331,11 +331,22 @@
 
             - 我们一般的做法：
             ```
-            function searchProducts(keyword, categoryId, pageNum, pageSize) {
+            function searchProducts(keyword, categoryId, pageNum=1, pageSize=10) {
                 ...
             }
             ```
 
+            - 可提供默认值，但不想传keyword, categoryId怎么破，Sorry，只能这样：
+            ```
+            searchProducts(undefined, undefined, 2, 10);
+            ```
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 解构    
+            
             - 稍微改善的做法：
             ```
             /**
@@ -345,150 +356,56 @@
                 ...
             }
             ```
+
+            - 调用起来舒服一些
+            ```
+            searchProducts({pageNum: 2})
+            ```
+
+            - 但参数默认值呢，哎，只能在函数代码里面实现
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 解构 
             
+            - 当当当，优雅的解构方案：  
+            ```
+            function searchProducts({keyword, categoryId, pageNum = 1, pageSize = 12}) {
+                ...   
+            }
+            ```
+
+            - 完美，可声明默认值，调用也很友好。谁说鱼与熊掌不可煎得滴~ <!-- .element: class="fragment" data-fragment-index="1" -->  
             
             </script>
         </section>
 
         <section data-markdown>
             <script type="text/template">
-            ### 模块规范：定义    
+            ### 解构 
             
-            一个文件就是一个模块，通过 ***exports*** 对外提供方法和属性  
+            - 应用场景二：实现多重值返回
 
+            - 以数组方式返回多值
             ```
-                // hello.js
-
-                function sayHi() {
-                    console.log('hi')
-                }
-
-                exports.sayHi = sayHi;
-            ```
-            
-            </script>
-        </section>
-
-        <section data-markdown>
-            <script type="text/template">
-            ### 模块规范：引用    
-            
-            通过 ***require*** 引用其它模块  
-
-            ```
-                // demo.js
-
-                const hello = require('./hello');
-
-                hello.sayHi();
-            ```
-            
-            </script>
-        </section>
-
-        <section data-markdown>
-            <script type="text/template">
-            ### 模块规范：标识    
-            
-            即require的参数  
-
-            1. 模块名：require('fs')
-
-            2. 模块路径（相对和绝对路径）：require('./hello')
-            
-            </script>
-        </section>
-
-        <section data-markdown>
-            <script type="text/template">
-            require, what are you doing?   
-
-            主流程：路径分析 -> 文件定位 -> 编译执行 <!-- .element: class="fragment" data-fragment-index="0" -->
-            
-            1. if core module    <!-- .element: class="fragment" data-fragment-index="1" -->    
-               return core module    
-               `Example: require('fs')`
-            
-            2. if file path   <!-- .element: class="fragment" data-fragment-index="2" -->      
-               load_as_file or load_as_dir    
-               `Example: require('./hello/index.js')`    
-               `Example: require('./hello')`
-
-            3. load_node_module    <!-- .element: class="fragment" data-fragment-index="3" -->    
-               `Example: require('lodash')`
-
-            4. throw "not found"    <!-- .element: class="fragment" data-fragment-index="4" -->    
-            
-            </script>
-        </section>
-
-        <section data-markdown>
-            <script type="text/template">
-            load_as_file(X)?   
-
-            X -> X.js -> X.json -> X.node <!-- .element: class="fragment" data-fragment-index="1" -->    
-
-            前3个以javascript text加载，最后一个以二进制加载  <!-- .element: class="fragment" data-fragment-index="2" -->    
-            
-            </script>
-        </section>
-
-        <section data-markdown>
-            <script type="text/template">
-            load_as_dir(X)?   
-
-            1. if X/package.json is a file    <!-- .element: class="fragment" data-fragment-index="1" -->    
-               if "main" field exist    
-               `"main": "./main.js" => load_as_file(X/main.js)`   
-               [[例子]](https://github.com/koajs/koa/blob/master/package.json)
-            
-            2. load_index   <!-- .element: class="fragment" data-fragment-index="2" -->      
-               `load_as_file(X/index)`   
-               [[例子]](https://github.com/expressjs/express)  
-            
-            </script>
-        </section>
-
-        <section data-markdown>
-            <script type="text/template">
-            load_node_module(X)?   
-
-            - 栗子：    
-            ```  
-            # /path/to/demo/demo.js  
-            require('lodash');
-            ```
-
-            - 解析过程：我要一步一步往上爬 <!-- .element: class="fragment" data-fragment-index="1" -->    
-
-            >  <!-- .element: class="fragment" data-fragment-index="2" -->      
-            `load_as_dir(/path/to/demo/node_modules/lodash)` 
-            `load_as_dir(/path/to/node_modules/lodash)`    
-            `load_as_dir(/path/node_modules/lodash) `   
-            `load_as_dir(/node_modules/lodash)`     
-            `load_as_dir(global paths)`       
-
-            `($HOME/.node_modules $HOME/.node_libraries $PREFIX/lib/node)` <!-- .element: class="fragment" data-fragment-index="3" -->
-            
-            </script>
-        </section>
-
-        <section data-markdown>
-            <script type="text/template">
-            Module Wrapper
-
-            ```
-            # hello.js
-
-            exports.sayHi = function() { console.log('hi') }
-            ```
-
-            ↓
-
-            ```
-            (function(exports, require, module, __filename, __dirname) {
-                exports.sayHi = function() { console.log('hi') }
-            });
+              function getMultiValues() {
+                var result1 = {name: 'r1'};
+                var result2 = 'r2';
+                return [result1, result2];
+              }
+              
+              // 解构做法
+              var [r1, r2] = getMultiValues();
+              console.log(r1, r2);
+              
+              // 临时变量做法
+              var result = getMultiValues();
+              var r1 = result[0];
+              var r2 = result[1];
+              console.log(r1, r2);
             ```
             
             </script>
@@ -496,38 +413,75 @@
 
         <section data-markdown>
             <script type="text/template">
-            Module 循环依赖解决方案
-
-            unfinished copy
-
-            ```
-            # a.js
-            console.log('a starting');
-            exports.done = false;
-            const b = require('./b.js');
-            console.log('in a, b.done = %j', b.done);
-            exports.done = true;
-            console.log('a done');
-            ```
-
-            ```
-            # b.js
-            console.log('b starting');
-            exports.done = false;
-            const a = require('./a.js');
-            console.log('in b, a.done = %j', a.done);
-            exports.done = true;
-            console.log('b done');
-            ```
-
-            ```
-            # main.js
-            console.log('main starting');
-            const a = require('./a.js');
-            const b = require('./b.js');
-            console.log('in main, a.done=%j, b.done=%j', a.done, b.done);
-            ```
+            ### 解构 
             
+            - 应用场景二：实现多重值返回
+
+            - 以对象方式返回多值
+            ```
+              function getMultiValues() {
+                var result1 = {name: 'r1'};
+                var result2 = 'r2';
+                return {r1: result1, r2: result2};
+              }
+              
+              // 解构做法
+              var {r1, r2} = getMultiValues();
+              console.log(r1, r2);
+              
+              // 临时变量做法
+              var result = getMultiValues();
+              var r1 = result.r1;
+              var r2 = result.r2;
+              console.log(r1, r2);
+            ```
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 箭头函数 ->
+            
+            - 懒人必备良品：   
+            `可省去function关键字`  
+            `单语句可省去return关键字和大括号 {}`  
+            `单参数可省去小括号 ()`  
+
+            - 最省的情况：  
+            ```
+            [1, 2, 3].filter(num => num > 1);
+            PK：
+            [1, 2, 3].filter(function(num) { return num > 1; });
+            ```
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 箭头函数 ->
+            
+            - 一些栗子：
+            ```
+            // 非单参数代码示例：
+            [1, 2, 3].filter((num, idx) => idx > 1);
+            // 非单语句代码示例：
+            [1, 2, 3].filter(num => { console.log(num); return num > 1; });
+            // 返回对象
+            var result = [1, 2, 3].map(num => ({key: num})); // 必须加个小括号
+            ``` 
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 箭头函数 ->
+
+            - 与function的些许区别： 
+
+            - 1.没有自己的this值。this值继承自外围作用域  
+            
+            - 2.没有arguments对象。这不是坏消息，因为我们有不定参数和默认值法宝
+
             </script>
         </section>
 
