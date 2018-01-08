@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Start ES6!</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../css/reveal.css">
+    <link rel="stylesheet" href="../../css/theme/league.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../../lib/css/zenburn.css">
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+
+        <section data-markdown>
+            <script type="text/template">
+                ## Start ES6!
+
+                by Daniel
+            </script>
+        </section>
+
+        <!--About-->
+        <section data-markdown>
+            <script type="text/template">
+            ## What's ES6?
+
+            ECMAScript是一个程序语言"标准"，它描述了这门语言的语法，类型，标准库等 <!-- .element: class="fragment" data-fragment-index="1" --> 
+
+            Javascript是它的实现和扩展（微软的Jscript也是其实现和扩展）<!-- .element: class="fragment" data-fragment-index="2" --> 
+
+            ES6就是指ECMAScript这个标准的第6版 <!-- .element: class="fragment" data-fragment-index="3" --> 
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## for-of
+
+            - 用于“正确地"遍历数组
+            ```
+                let arr = ['a', 'b'];
+                for (let item of arr) {
+                    console.log(item); // 输出"a" "b"
+                }
+            ```
+
+            - 可用 *break*，*continue*，*return*中断循环
+            ```
+                let arr = ['a', 'b'];
+                for (let item of arr) {
+                    if (item === 'a') continue;
+                    console.log(item); // 输出"b"
+                }
+            ```
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## for-of
+
+            - 有坑的遍历数组的方式：for-in
+
+            - 坑一：idx是字符串
+            ```
+                let arr = ['foo', 'bar'];
+                for (let idx in arr) {
+                    console.log(idx, arr[idx], idx + 1, arr[idx + 1]);
+                }
+            ```
+            - ( Why string? 为遍历Object而设计，Object的key是string ）
+
+            - 坑二：意外的输出
+            ```
+                let arr= ['a', 'b'];
+                arr.key = 'value';
+                for (let idx in arr) {  
+                    console.log(idx); // 输出"0" "1" "key"
+                }
+            ```
+            - ( 原因同上，为Object而设计 ）
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## for-of
+
+            - 总结：遍历数组用for-of，遍历对象用for-in
+
+            - 更精确的总结：遍历Array，Map，Set用for-of，遍历Object用for-in
+
+            - [想了解原因吗？下次相聚更精彩](https://www.jianshu.com/p/d14af776b5a2)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Generator 生成器
+
+            - 一个简单的栗子
+            ```
+              function * demo() {
+                yield 'hi';
+                yield 'daniel';
+              }
+              let demoGen = demo(); // 未执行任何代码，立即返回一个生成器对象
+              console.log(demoGen.next()); // 遇到yield，执行yield的代码并返回
+              console.log(demoGen.next());
+              console.log(demoGen.next());
+            ```
+
+            - 应用场景：同步方式书写异步代码，解决回调地狱的尝试，需配合Promise和第三方库，如 Q.async, co 
+            ```
+              Q.async(function* () {
+                yield first_async();
+                yield second_async();
+                yield third_async();
+              });
+            ```
+            - 原理就是在异步回调的时候执行生成器的.next()方法
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Generator 生成器
+
+            | 区别 | 生成器函数 | 普通函数 |
+            | ------------- | ------------- | ------------- |
+            | 声明方式 | function* | function |
+            | 返回方式 | yield（可多次） | return（只一次） |
+            | 返回值 | 生成器对象 | return的值 |
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## 模板字符串
+
+            - 反撇号 "`"
+            ```
+                let data = {name: 'daniel'};
+                console.log(`Hello ${data.name}`);
+            ```
+
+            - 局限性  
+            无特殊字符转义（如&nbsp），无国际化，无内建循环语法，无条件语句支持等  
+            所以暂把它用于普通字符串模板的处理，如错误消息。页面模板还是交由专业的模板引擎处理
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## 模板字符串
+
+            - 特性一：可写多行
+            ```
+                let data = {name: 'daniel'};
+                console.log(`
+                Dear ${data.name},
+                    Some message here
+                `);
+            ```
+
+            - 特性二：支持任意JS表达式
+            ```
+                let data = {name: 'daniel'};
+                function getBody() {
+                  return 'Some message here'
+                }
+                let hiTmpl = `Dear ${data.name}`;
+                console.log(`
+                ${hiTmpl},
+                    ${getBody()}
+                `);
+            ```
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## 模板字符串
+
+            - tagged template 标签模板    
+            标签模板可以自定义模板处理方法，通过在字符串模板前加一个标签指定处理函数，如下把变量变成大写：
+            ```
+            let name = 'Daniel';
+            let str = CustomTag`Hello ${name}, nice to see you.`;
+            console.log(str);
+            function CustomTag(templateData) {
+                console.log(templateData, arguments[1]);
+                let args = arguments;
+                let result = templateData.map(function(item, idx) {
+                    return idx >= 1 ? args[idx].toUpperCase() + item : item;
+                }).join('');
+                return result;
+            }
+            ```
+
+            - 相关项目：[common-tags](https://github.com/declandewet/common-tags)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## 不定参数和默认值
+
+            - 先来看一个arguments的例子
+            ```
+            function foo1(firstParam) {
+                // 不熟悉的人真摸不着头脑，这arguments，哪里来的啊
+                // 注意索引从1开始，因为0是firstParam
+                for (let i = 1, leng = arguments.length; i < leng; i++) {
+                    console.log(`other param: ${arguments[i]}`);
+                }
+            }
+            foo1('a', 'b', 'c');
+            ```
+
+            - 不定参数闪亮登场（对比可读性，无对比就无伤害）
+            ```
+            function foo2(firstParam, ...others) {
+                for(let otherParam of others) {
+                    console.log(`other param: ${otherParam}`);
+                }
+            }
+            foo2('a', 'b', 'c');
+            ```
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## 不定参数和默认值
+
+            - 注意：不定参数只能作为最后一个参数，没值的时候是个空数组，非undefined
+
+            - 标准中规定，使用不定参数和默认值的函数中禁止使用arguments对象   
+
+            - 不定参数可以优雅地替换掉arguments，SO，呼吁像禁掉IE一样禁掉arguments
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## 不定参数和默认值
+
+            - 没有默认值之前，你可能是这样干的：
+            ```
+            function foo(param1) {
+                if (param1 === undefined) param1 = 'default value';
+                console.log(param1);
+            }
+            foo();
+            ```
+
+            - 让默认参数来解救你
+            ```
+            function foo(param1="default value") {
+                console.log(param1);
+            }
+            foo();
+            ```
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## 不定参数和默认值
+
+            - 默认参数自左向右求值，所以你可以：
+            ```
+            function foo(param1="default value", param2=param1) {
+                console.log(param1, param2);
+            }
+            foo('daniel');
+            ```
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## 解构
+
+            - 迭代器对象用"[]"，如Array（何为迭代器对象，请听下回分解）
+            ```
+            // 支持留空跳过，嵌套，不定参数
+            let [, v2, [v3], ...tail] = [1, 2, [3], 4, 5];
+            console.log(v2, v3, tail); // => 2 3 [4, 5]
+            ```
+
+            - 普通对象Object用"{}"
+            ```
+            var fooObj = {name: 'foo', tel: 8888888};
+            var {name: nameVal, tel: telVal} = fooObj;
+            var {name, tel} = fooObj; // 等价于var {name: name, tel: tel} = fooObj;
+            console.log(nameVal, telVal); // => foo 8888888
+            console.log(name, tel); // => foo 8888888
+            ```
+
+            </script>
+        </section>
+
+        <!--Modules-->
+        <section data-markdown>
+            <script type="text/template">
+            ## 解构
+
+            - 应用场景一：函数参数定义
+
+            - 我们一般的做法：
+            ```
+            function searchProducts(keyword, categoryId, pageNum, pageSize) {
+                ...
+            }
+            ```
+
+            - 稍微改善的做法：
+            ```
+            /**
+             * @param paramObj {keyword:, categoryId:, pageNum:, pageSize:}
+             */
+            function searchProducts(paramObj) {
+                ...
+            }
+            ```
+            
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 模块规范：定义    
+            
+            一个文件就是一个模块，通过 ***exports*** 对外提供方法和属性  
+
+            ```
+                // hello.js
+
+                function sayHi() {
+                    console.log('hi')
+                }
+
+                exports.sayHi = sayHi;
+            ```
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 模块规范：引用    
+            
+            通过 ***require*** 引用其它模块  
+
+            ```
+                // demo.js
+
+                const hello = require('./hello');
+
+                hello.sayHi();
+            ```
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 模块规范：标识    
+            
+            即require的参数  
+
+            1. 模块名：require('fs')
+
+            2. 模块路径（相对和绝对路径）：require('./hello')
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            require, what are you doing?   
+
+            主流程：路径分析 -> 文件定位 -> 编译执行 <!-- .element: class="fragment" data-fragment-index="0" -->
+            
+            1. if core module    <!-- .element: class="fragment" data-fragment-index="1" -->    
+               return core module    
+               `Example: require('fs')`
+            
+            2. if file path   <!-- .element: class="fragment" data-fragment-index="2" -->      
+               load_as_file or load_as_dir    
+               `Example: require('./hello/index.js')`    
+               `Example: require('./hello')`
+
+            3. load_node_module    <!-- .element: class="fragment" data-fragment-index="3" -->    
+               `Example: require('lodash')`
+
+            4. throw "not found"    <!-- .element: class="fragment" data-fragment-index="4" -->    
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            load_as_file(X)?   
+
+            X -> X.js -> X.json -> X.node <!-- .element: class="fragment" data-fragment-index="1" -->    
+
+            前3个以javascript text加载，最后一个以二进制加载  <!-- .element: class="fragment" data-fragment-index="2" -->    
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            load_as_dir(X)?   
+
+            1. if X/package.json is a file    <!-- .element: class="fragment" data-fragment-index="1" -->    
+               if "main" field exist    
+               `"main": "./main.js" => load_as_file(X/main.js)`   
+               [[例子]](https://github.com/koajs/koa/blob/master/package.json)
+            
+            2. load_index   <!-- .element: class="fragment" data-fragment-index="2" -->      
+               `load_as_file(X/index)`   
+               [[例子]](https://github.com/expressjs/express)  
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            load_node_module(X)?   
+
+            - 栗子：    
+            ```  
+            # /path/to/demo/demo.js  
+            require('lodash');
+            ```
+
+            - 解析过程：我要一步一步往上爬 <!-- .element: class="fragment" data-fragment-index="1" -->    
+
+            >  <!-- .element: class="fragment" data-fragment-index="2" -->      
+            `load_as_dir(/path/to/demo/node_modules/lodash)` 
+            `load_as_dir(/path/to/node_modules/lodash)`    
+            `load_as_dir(/path/node_modules/lodash) `   
+            `load_as_dir(/node_modules/lodash)`     
+            `load_as_dir(global paths)`       
+
+            `($HOME/.node_modules $HOME/.node_libraries $PREFIX/lib/node)` <!-- .element: class="fragment" data-fragment-index="3" -->
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            Module Wrapper
+
+            ```
+            # hello.js
+
+            exports.sayHi = function() { console.log('hi') }
+            ```
+
+            ↓
+
+            ```
+            (function(exports, require, module, __filename, __dirname) {
+                exports.sayHi = function() { console.log('hi') }
+            });
+            ```
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            Module 循环依赖解决方案
+
+            unfinished copy
+
+            ```
+            # a.js
+            console.log('a starting');
+            exports.done = false;
+            const b = require('./b.js');
+            console.log('in a, b.done = %j', b.done);
+            exports.done = true;
+            console.log('a done');
+            ```
+
+            ```
+            # b.js
+            console.log('b starting');
+            exports.done = false;
+            const a = require('./a.js');
+            console.log('in b, a.done = %j', a.done);
+            exports.done = true;
+            console.log('b done');
+            ```
+
+            ```
+            # main.js
+            console.log('main starting');
+            const a = require('./a.js');
+            const b = require('./b.js');
+            console.log('in main, a.done=%j, b.done=%j', a.done, b.done);
+            ```
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## Thanks & The End！
+            </script>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="../../lib/js/head.min.js"></script>
+<script src="../../js/reveal.js"></script>
+
+<script>
+
+    Reveal.initialize({
+        history: true,
+        transition: 'linear',
+        width: 1280,
+
+        math: {
+            // mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+            config: 'TeX-AMS_HTML-full'
+        },
+
+        dependencies: [
+            { src: '../../lib/js/classList.js' },
+
+            // Interpret Markdown in <section> elements
+            { src: '../../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        ]
+    });
+
+</script>
+
+</body>
+</html>
