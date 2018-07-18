@@ -479,6 +479,23 @@
             - 与function的些许区别： 
 
             - 1.没有自己的this值。this值继承自外围作用域  
+            ```
+            // ->
+            this.nums.forEach((v) => {
+                if (v % 5 === 0)
+                    this.fives.push(v)
+            })
+            // function
+            var self = this;
+            this.nums.forEach(function (v) {
+                if (v % 5 === 0)
+                    self.fives.push(v);
+            });
+            this.nums.forEach(function (v) {
+                if (v % 5 === 0)
+                    this.fives.push(v);
+            }.bind(this));
+            ```
             
             - 2.没有arguments对象。这不是坏消息，因为我们有不定参数和默认值法宝
 
