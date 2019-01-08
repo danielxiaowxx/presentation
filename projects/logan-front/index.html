@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Logan Front Dev</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="../../css/reveal.css">
+	<link rel="stylesheet" href="../../css/theme/league.css" id="theme">
+
+	<!-- Code syntax highlighting -->
+	<link rel="stylesheet" href="../../lib/css/zenburn.css">
+</head>
+
+<body>
+
+	<div class="reveal">
+
+		<div class="slides">
+
+			<section data-markdown>
+				<script type="text/template">
+                ## Logan Front Dev
+
+                by Daniel
+            </script>
+			</section>
+
+			<section data-markdown>
+				<script type="text/template">
+                ## Setup Local Dev Env
+
+                - Install docker && nodejs
+
+                - Config host
+                ```
+                    # Note : ip is your docker host ip
+                    192.168.99.100 logan-portal.local.logan.xiaopeng.local
+                ```
+
+                - Config docker container env
+                ```
+                    # docker-compose.yml
+                    # Note : ip is your computer ip
+                    LOCAL_DEV_IP: 10.192.151.224
+                ```
+
+                - Install dependency 
+                ```
+                    $ npm install
+                ```
+            </script>
+			</section>
+
+			<section data-markdown>
+				<script type="text/template">
+                ## Start Development
+
+                - Start nginx
+                ```
+                    $ npm run run-dev-docker
+                ```
+
+                - Start local dev server
+                ```
+                    $ npm run serve
+                ```
+            </script>
+			</section>
+
+			<section data-markdown>
+				<script type="text/template">
+                ## Code Generator
+
+                - Install
+                ```
+                    $ npm install -g yo
+                    $ npm install -g generator-loganui
+                ```
+
+                - Command Preview   
+                ```
+                    loganui
+                        add-component
+                        add-modal
+                        add-module
+                        add-page
+                ```
+            </script>
+			</section>
+
+			<section>
+				<section data-markdown>
+					<script type="text/template">
+                ## Demo Time - List Page
+
+                - Add a demo module
+                ```
+                    $ yo loganui:add-module
+                    ? Input the module name.(Use '-' to connect words.) demo
+                ```
+
+                - Add a demo list page
+                ```
+                    $ yo loganui:add-page
+                    ? Chose the module. demo
+                    ? Chose the type of page. list
+                    ? Input the page name.(Use '-' to connect words.) demo-list
+                ```
+
+                Now you can visit [/demo/demo-list](https://logan-portal.local.logan.xiaopeng.local/#/demo/demo-list)
+
+            </script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+                ## Demo Time - List Page
+
+                <p style="white-space: nowrap">Edit `src/modules/demo/pages/demo-list.vue` to fit your need<p>
+
+                For config detail, visit [List Page Config Doc](https://github.com/daniel-dx/ncadmin-core/blob/master/config-list.md)
+
+            </script>
+				</section>
+			</section>
+
+			<section>
+				<section data-markdown>
+					<script type="text/template">
+                ## Demo Time - Editable Modal
+
+                - Add a demo editable modal
+                ```
+                    $ yo loganui:add-modal
+                    ? Chose the module. demo
+                    ? Chose the type of page. edit
+                    ? Input the modal name.(Use '-' to connect words.) demo-edit
+                ```
+
+                <p style="white-space: nowrap">Find your modal component name in `src/modules/demo/comp-index.js`</p>
+
+            </script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+                ## Demo Time - Editable Modal
+
+                <p style="white-space: nowrap">Now implement new operation for list page</p>
+
+```
+	tools: {
+		new: {
+			handler: {
+				type: "modal",
+				options: {
+					component: {
+						name: "demo.modals.demo-edit",
+						config: {},
+						value: "dx: {}"
+					},
+					modalConfig: {
+						title: "New"
+					}
+				},
+				refresh: "current"
+			}
+		},
+		...
+	}
+```
+
+            </script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+                ## Demo Time - Editable Modal
+
+                <p style="white-space: nowrap">By the way, implement editing operation</p>
+
+```
+	actions: {
+		edit: {
+			handler: {
+				type: "modal",
+				options: {
+					component: {
+						name: "demo.modals.demo-edit",
+						config: {},
+						value: "dx: {{$item}}"
+					},
+					modalConfig: {
+						title: "Edit"
+					}
+				},
+				refresh: "current"
+			}
+		},
+		...
+	}
+```
+
+            </script>
+				</section>
+
+				<section data-markdown>
+					<script type="text/template">
+							## Demo Time - Editable Modal
+
+							<p style="white-space: nowrap">Edit `src/modules/demo/modals/demo-edit.vue` to fit your need<p>
+
+							For form config detail, next >>
+
+					</script>
+				</section>
+			</section>
+
+			<section data-markdown>
+				<script type="text/template">
+								## Nice Form - [ncform](https://github.com/vipshop/ncform)
+								
+								- [ncform config/props/api/event](https://github.com/vipshop/ncform/blob/master/CONFIG.md)
+
+								- [Standard Components](https://vipshop.github.io/ncform/ncform-theme-elementui/index.html)
+
+            </script>
+			</section>
+
+			<section data-markdown>
+				<script type="text/template">
+                ## Thanks！
+            </script>
+			</section>
+
+		</div>
+
+	</div>
+
+	<script src="../../lib/js/head.min.js"></script>
+	<script src="../../js/reveal.js"></script>
+
+	<script>
+
+		Reveal.initialize({
+			history: true,
+			transition: 'linear',
+
+			math: {
+				// mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+				config: 'TeX-AMS_HTML-full'
+			},
+
+			dependencies: [
+				{ src: '../../lib/js/classList.js' },
+
+				// Interpret Markdown in <section> elements
+				{ src: '../../plugin/markdown/marked.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+				{ src: '../../plugin/markdown/markdown.js', condition: function () { return !!document.querySelector('[data-markdown]'); } },
+			]
+		});
+
+	</script>
+
+</body>
+
+</html>
