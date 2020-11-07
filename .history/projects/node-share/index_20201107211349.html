@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>浅谈Node.js</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../css/reveal.css">
+    <link rel="stylesheet" href="../../css/theme/night.css" id="theme">
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈Node.js
+
+                by Daniel
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈历史
+
+                - 作者：Ryan Dahl <!-- .element: class="fragment" data-fragment-index="1" -->
+
+                - 初衷：用V8创建一个轻量级的Web服务器并提供一套SDK <!-- .element: class="fragment" data-fragment-index="2" -->
+
+                - 现在：Web应用，Web服务器，桌面应用，命令行工具 <!-- .element: class="fragment" data-fragment-index="3" -->
+
+                - Why JS: 事件驱动，异步IO，开发门槛低<!-- .element: class="fragment" data-fragment-index="4" -->
+
+                - 名字缘由: 每一个应用进程都构成分布式网络应用的节点<!-- .element: class="fragment" data-fragment-index="5" -->
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈架构
+
+                ![](http://note.youdao.com/yws/public/resource/f67e1a6780670b06d6e7069e6250ee0e/xmlnote/29B7AD139AFB4B42A826D7D79A5D6D8A/29124)
+
+                “高性能” “跨平台” 
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈异步
+
+                - 一种高效的工作方式 
+
+                - Don't call me, i will call you <!-- .element: class="fragment" data-fragment-index="1" -->    
+                ![](http://note.youdao.com/yws/public/resource/f67e1a6780670b06d6e7069e6250ee0e/xmlnote/BC708276B7C54FE39896DB76B7C2D240/29128) <!-- .element: class="fragment" data-fragment-index="2" -->
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈单线程 - 优点
+
+                - 没有多线程状态同步问题 <!-- .element: class="fragment" data-fragment-index="1" -->
+
+                - 没有死锁 <!-- .element: class="fragment" data-fragment-index="2" -->
+
+                - 没有线程上下文切换带来的性能损耗 <!-- .element: class="fragment" data-fragment-index="3" -->
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈单线程 - 缺点
+
+                - 无法利用多核CPU <!-- .element: class="fragment" data-fragment-index="1" -->    
+                对策：通过child_process进行Master-Worker方式的cluster
+
+                - 错误引起整个应用退出 <!-- .element: class="fragment" data-fragment-index="2" -->    
+                对策：进程管理，如PM2，或cluster方式
+
+                - 耗CPU时间的运算阻塞线程 <!-- .element: class="fragment" data-fragment-index="3" -->    
+                对策：扩展C/C++模块或子进程方式，类似Web worker
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈应用场景
+
+                - 适用：IO密集型 <!-- .element: class="fragment" data-fragment-index="1" -->     
+                利用事件循环，而不是启动每一个线程来处理每一个请求
+
+                - CPU密集型？ <!-- .element: class="fragment" data-fragment-index="2" -->     
+                V8效率非常高，可采用专门的worker用于计算的方案    
+                更适合的语言：C或C++
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈安装
+
+                - 开发环境 <!-- .element: class="fragment" data-fragment-index="1" -->     
+                用 `nvm` - Node Version Manager   
+                安装：`nvm install 8`    
+                切换：`nvm use 6`
+
+                - 生产环境 <!-- .element: class="fragment" data-fragment-index="2" -->     
+                源码安装 - [官方指引](https://github.com/nodejs/node/blob/master/BUILDING.md#building-nodejs-on-supported-platforms)    
+                建议：因需同时存在多个版本，可用别名指向不同版本的Node，如`node6`，`node8`
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈调试
+
+                - KISS - keep it simple & stupid <!-- .element: class="fragment" data-fragment-index="1" -->     
+                打印信息，如`console.log('hello')`，建议用`debug`第三方模块
+
+                - 断点 <!-- .element: class="fragment" data-fragment-index="2" -->     
+                V6: `node app.js --inspect --debug-brk`   
+                V8: `node app.js --inspect-brk` 
+                chrome:  `about:inspect`   
+                ![](http://note.youdao.com/yws/public/resource/f61529b5f8afb87223c68e2594d740bb/xmlnote/BE81F04ABC7443669F05B42D9C624461/28611)
+
+                - IDE: vscode / webstorm / ... <!-- .element: class="fragment" data-fragment-index="3" -->  
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈常用工具库
+
+                - lodash - 实用工具类 <!-- .element: class="fragment" data-fragment-index="1" -->     
+                `_.get(a, 'b.c')`，`_.set(a, 'b.c', 'hi')`，`_.chain(a).filter(...).map(...).value()`
+
+                - bluebird - Promise工具类 <!-- .element: class="fragment" data-fragment-index="2" -->  
+                `var readFile = Promise.promisify(require("fs").readFile);`   
+                `readFile("myfile.js", "utf8").then(...).catch(...)`
+
+                - moment - 日期工具类 <!-- .element: class="fragment" data-fragment-index="3" -->  
+                `moment().format('YYYY-MM-DD HH:mm:ss')`  
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 浅谈常用工具库
+
+                - request or axio - HTTP Client类 <!-- .element: class="fragment" data-fragment-index="1" -->    
+                `request.get(...)` - 仅支持callback    
+                `axio.get(...).then(...).catch(...)` - 支持Promise   
+
+                - debug - 调试类 <!-- .element: class="fragment" data-fragment-index="2" -->   
+                `var debug = require('debug')('demo')`   
+                `debug('hello world');`    
+                `$ DEBUG=demo node app` 
+
+                - commander - 命令行工具类 <!-- .element: class="fragment" data-fragment-index="3" -->   
+                `program.version('0.1.0')`    
+                `.usage('[options] <file ...>')`    
+                `.option('-i, --integer <n>', 'An integer argument', parseInt)`   
+                `.parse(process.argv);`   
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 感 谢 聆 听！
+            </script>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="../../lib/js/head.min.js"></script>
+<script src="../../js/reveal.js"></script>
+
+<script>
+
+    Reveal.initialize({
+        history: true,
+        transition: 'linear',
+
+        math: {
+            // mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+            config: 'TeX-AMS_HTML-full'
+        },
+
+        dependencies: [
+            { src: '../../lib/js/classList.js' },
+
+            // Interpret Markdown in <section> elements
+            { src: '../../plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        ]
+    });
+
+</script>
+
+</body>
+</html>

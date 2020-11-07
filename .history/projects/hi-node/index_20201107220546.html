@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>嘿，Node.js!</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../dist/reset.css">
+    <link rel="stylesheet" href="../../dist/reveal.css">
+    <link rel="stylesheet" href="../../dist/theme/league.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="../../lib/css/zenburn.css">
+</head>
+
+<body>
+
+<div class="reveal">
+
+    <div class="slides">
+
+        <section data-markdown>
+            <script type="text/template">
+                ## 嘿，Node.js!
+
+                by Daniel
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## [About](#/2)
+
+                ## [Async IO](#/5)
+
+                ## [Modules](#/14) 
+            </script>
+        </section>
+
+        <!--About-->
+        <section data-markdown>
+            <script type="text/template">
+            ## What's Node.js?
+
+            <span class="fragment" data-fragment-index="0">一门语言？</span> <span class="fragment" data-fragment-index="1">Web服务器？</span> <span class="fragment" data-fragment-index="2">js库？</span>
+
+            Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine <!-- .element: class="fragment" data-fragment-index="3" --> 
+
+            Tags: event-driven + non-blocking I/O => Async IO <!-- .element: class="fragment" data-fragment-index="4" --> 
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## what's the package ecosystem?
+
+            NPM: npm is the package manager for javascript
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## What can be done with it?
+
+            Web 应用: express / koa / ...
+
+            web 服务器: TCP / UDP / HTTP / WebSocket
+
+            desktop 应用: electron / nw
+
+            命令行工具：webpack / gulp / ...
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            What ???
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170802234535.png?t=1501688705792)
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            Why ???
+
+            同步IO：m + n
+            ```
+            getDataFromDB(); // m seconds
+            getDataFromRemoteAPI(); // n seconds
+            ```
+
+            异步IO：max(m, n)
+            ```
+            Promise.all([getDataFromDB(), getDataFromRemoteAPI()]).then(res => {
+                ...
+            })
+            ```
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            How ??? - libuv
+
+            ![](http://note.youdao.com/yws/public/resource/f67e1a6780670b06d6e7069e6250ee0e/xmlnote/29B7AD139AFB4B42A826D7D79A5D6D8A/29124)
+            ![](http://daniel-test.image.alimmdn.com/share/20170803003218.png?t=1501691522079) <!-- .element: class="fragment" data-fragment-index="1" --> 
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            ![](http://docs.libuv.org/en/v1.x/_images/architecture.png)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识阻塞IO
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803001425.png?t=1501690586811)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识非阻塞IO - read
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803001958.png?t=1501691053406)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识非阻塞IO - select 数组，1024限制
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803002025.png?t=1501691058675)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识非阻塞IO - poll 链表，性能提升
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803002436.png?t=1501691047788)
+
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ## Async IO
+
+            认识非阻塞IO - epoll
+
+            ![](http://daniel-test.image.alimmdn.com/share/20170803002439.png?t=1501691063690)
+
+            </script>
+        </section>
+
+        <!--Modules-->
+        <section data-markdown>
+            <script type="text/template">
+            ## Module
+
+            <span class="fragment" data-fragment-index="0">遵循 "CommonJS" 规范</span> <span class="fragment" data-fragment-index="2">- Module只是规范之一</span>   
+            ![](http://daniel-test.image.alimmdn.com/share/commonjs.png?t=1501407779532) <!-- .element: class="fragment" data-fragment-index="1" -->  
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 模块规范：定义    
+            
+            一个文件就是一个模块，通过 ***exports*** 对外提供方法和属性  
+
+            ```
+                // hello.js
+
+                function sayHi() {
+                    console.log('hi')
+                }
+
+                exports.sayHi = sayHi;
+            ```
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 模块规范：引用    
+            
+            通过 ***require*** 引用其它模块  
+
+            ```
+                // demo.js
+
+                const hello = require('./hello');
+
+                hello.sayHi();
+            ```
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            ### 模块规范：标识    
+            
+            即require的参数  
+
+            1. 模块名：require('fs')
+
+            2. 模块路径（相对和绝对路径）：require('./hello')
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            require, what are you doing?   
+
+            主流程：路径分析 -> 文件定位 -> 编译执行 <!-- .element: class="fragment" data-fragment-index="0" -->
+            
+            1. if core module    <!-- .element: class="fragment" data-fragment-index="1" -->    
+               return core module    
+               `Example: require('fs')`
+            
+            2. if file path   <!-- .element: class="fragment" data-fragment-index="2" -->      
+               load_as_file or load_as_dir    
+               `Example: require('./hello/index.js')`    
+               `Example: require('./hello')`
+
+            3. load_node_module    <!-- .element: class="fragment" data-fragment-index="3" -->    
+               `Example: require('lodash')`
+
+            4. throw "not found"    <!-- .element: class="fragment" data-fragment-index="4" -->    
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            load_as_file(X)?   
+
+            X -> X.js -> X.json -> X.node <!-- .element: class="fragment" data-fragment-index="1" -->    
+
+            前3个以javascript text加载，最后一个以二进制加载  <!-- .element: class="fragment" data-fragment-index="2" -->    
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            load_as_dir(X)?   
+
+            1. if X/package.json is a file    <!-- .element: class="fragment" data-fragment-index="1" -->    
+               if "main" field exist    
+               `"main": "./main.js" => load_as_file(X/main.js)`   
+               [[例子]](https://github.com/koajs/koa/blob/master/package.json)
+            
+            2. load_index   <!-- .element: class="fragment" data-fragment-index="2" -->      
+               `load_as_file(X/index)`   
+               [[例子]](https://github.com/expressjs/express)  
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            load_node_module(X)?   
+
+            - 栗子：    
+            ```  
+            # /path/to/demo/demo.js  
+            require('lodash');
+            ```
+
+            - 解析过程：我要一步一步往上爬 <!-- .element: class="fragment" data-fragment-index="1" -->    
+
+            >  <!-- .element: class="fragment" data-fragment-index="2" -->      
+            `load_as_dir(/path/to/demo/node_modules/lodash)` 
+            `load_as_dir(/path/to/node_modules/lodash)`    
+            `load_as_dir(/path/node_modules/lodash) `   
+            `load_as_dir(/node_modules/lodash)`     
+            `load_as_dir(global paths)`       
+
+            `($HOME/.node_modules $HOME/.node_libraries $PREFIX/lib/node)` <!-- .element: class="fragment" data-fragment-index="3" -->
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            Module Wrapper
+
+            ```
+            # hello.js
+
+            exports.sayHi = function() { console.log('hi') }
+            ```
+
+            ↓
+
+            ```
+            (function(exports, require, module, __filename, __dirname) {
+                exports.sayHi = function() { console.log('hi') }
+            });
+            ```
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+            Module 循环依赖解决方案
+
+            unfinished copy
+
+            ```
+            # a.js
+            console.log('a starting');
+            exports.done = false;
+            const b = require('./b.js');
+            console.log('in a, b.done = %j', b.done);
+            exports.done = true;
+            console.log('a done');
+            ```
+
+            ```
+            # b.js
+            console.log('b starting');
+            exports.done = false;
+            const a = require('./a.js');
+            console.log('in b, a.done = %j', a.done);
+            exports.done = true;
+            console.log('b done');
+            ```
+
+            ```
+            # main.js
+            console.log('main starting');
+            const a = require('./a.js');
+            const b = require('./b.js');
+            console.log('in main, a.done=%j, b.done=%j', a.done, b.done);
+            ```
+            
+            </script>
+        </section>
+
+        <section data-markdown>
+            <script type="text/template">
+                ## Thanks & The End！
+            </script>
+        </section>
+
+    </div>
+
+</div>
+
+<script src="../../lib/js/head.min.js"></script>
+<script src="../../dist/reveal.js"></script>
+
+<script>
+
+    Reveal.initialize({
+        history: true,
+        transition: 'linear',
+        width: 1280,
+
+        math: {
+            // mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+            config: 'TeX-AMS_HTML-full'
+        },
+
+        dependencies: [
+            { src: '../../lib/js/classList.js' },
+
+            // Interpret Markdown in <section> elements
+            { src: '../../plugin/markdown/plugin.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: '../../plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        ]
+    });
+
+</script>
+
+</body>
+</html>
